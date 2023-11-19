@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Sử dụng Font Awesome icons -->
+    <style>
+        /* CSS để tạo giao diện đẹp */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Thanh bên trái */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            background-color: #493333;
+            color: #c43232;
+            padding: 15px 20px 200px;
+        }
+
+        /* Hộp chứa logo */
+        .logo-container {
+            margin-bottom: 20px;
+            background-color: #333;
+            /* Màu nền tương tự màu nền của thanh bên trái */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 300px;
+            /* Điều chỉnh kích thước tối đa cho logo */
+            max-height: 200px;
+        }
+
+        /* Thanh tìm kiếm */
+        .search-bar {
+            text-align: center;
+            padding: 10px 20px;
+            /* Ngắn lại ô tìm kiếm */
+            display: flex;
+            justify-content: space-between;
+            /* Canh 2 biểu tượng về 2 phía */
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            /* Mở rộng ô tìm kiếm để lấp đầy không gian còn lại */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .search-icons {
+            display: flex;
+        }
+
+        .search-icons i {
+            font-size: 20px;
+            margin-left: 10px;
+            /* Khoảng cách giữa các biểu tượng */
+            cursor: pointer;
+        }
+
+        /* Ô trong thanh bên trái */
+        .sidebar-item {
+            margin-bottom: 20px;
+            background-color: #f9f0f0d3;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            /* Hiệu ứng màu nền */
+            position: relative;
+            /* Để tạo không gian cho biểu tượng "+" */
+        }
+
+        /* Hiệu ứng hover cho ô */
+        .sidebar-item:hover {
+            background-color: #ffffff0e;
+        }
+
+        /* Biểu tượng "+" trong hình tròn nhỏ */
+        .sidebar-item i {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            /* Màu nền của hình tròn */
+            color: #fff;
+            /* Màu chữ trong hình tròn */
+            border-radius: 50%;
+            /* Để tạo hình tròn */
+            padding: 5px;
+        }
+
+        /* Nội dung chính */
+        .main-content {
+            margin-left: 320px;
+            /* Để tạo không gian để hiển thị thanh bên trái */
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        /* Định dạng cho ô menu và ô nơi bán */
+        .menu,
+        .locations {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu li,
+        .locations li {
+            margin-bottom: 10px;
+        }
+
+        /* Liên kết cho các ô */
+        .sidebar-item a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* Hiệu ứng "Xem thêm" */
+        .locations li.hide {
+            display: none;
+        }
+
+        .see-more-button {
+            cursor: pointer;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+        }
+
+        .see-more-button span {
+            margin-left: 5px;
+            transition: transform 0.3s;
+            /* Hiệu ứng xoay biểu tượng "+" */
+        }
+
+        .locations.expanded li.hide {
+            display: block;
+        }
+
+        /* Hiệu ứng khi biểu tượng "+" được xoay */
+        .see-more-button.expanded span {
+            transform: rotate(180deg);
+        }
+
+        .post-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .post {
+            width: 55%;
+            /* Độ rộng của ô chứa bài viết */
+            background-color: #fff;
+            /* Màu nền của ô */
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            /* Đổ bóng cho ô */
+            margin: 10px 30px 10px;
+            /* Khoảng cách giữa các ô */
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+        .post-image {
+            max-width: 100%;
+            /* Giới hạn kích thước tối đa của ảnh theo chiều rộng của ô post */
+            height: auto;
+            /* Đảm bảo tỷ lệ khung hình không bị biến đổi */
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .activity-time {
+            color: #888;
+            margin: 0px 48px 10px;
+        }
+
+        .buy-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* CSS cho địa điểm và số điện thoại */
+        .location-info,
+        .contact-info {
+            margin-top: 10px;
+            /* Khoảng cách giữa các phần tử */
+        }
+
+        .location-info i,
+        .contact-info i {
+            margin-right: 5px;
+            /* Khoảng cách giữa biểu tượng và nội dung */
+        }
+
+        /* CSS cho biểu tượng giá tiền */
+        .price i {
+            font-size: 20px;
+            /* Kích thước của biểu tượng */
+            color: #007bff;
+            /* Màu sắc của biểu tượng */
+            margin-right: 5px;
+            /* Khoảng cách giữa biểu tượng và giá tiền */
+        }
+
+        /* CSS cho nhãn giá tiền */
+        .price-label {
+            font-size: 16px;
+            /* Kích thước của nhãn giá tiền */
+            color: #555;
+            /* Màu sắc của nhãn giá tiền */
+            margin-right: 5px;
+            /* Khoảng cách giữa nhãn và giá tiền */
+        }
+
+        /* CSS cho phần bên phải "Nổi bật" */
+        .highlight {
+            position: fixed;
+            top: 100px;
+            /* Khoảng cách từ trên xuống */
+            right: 20px;
+            /* Khoảng cách từ phải sang */
+            width: 300px;
+            /* Độ rộng của phần "Nổi bật" */
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .highlight h2 {
+            font-size: 20px;
+            margin: 5px 10px 10px;
+        }
+
+        /* CSS cho từng bài viết nổi bật */
+        .highlight-post {
+            margin: 10px 0px 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Đặt kích thước hình vuông cho ảnh trong phần "Nổi bật" */
+        .highlight-image img {
+            width: 100px;
+            /* Độ rộng của ảnh */
+            height: 100px;
+            /* Chiều cao của ảnh */
+            border-radius: 10px;
+            /* Độ bo góc cho ảnh (tạo thành hình vuông) */
+            margin-right: 20px;
+            /* Khoảng cách giữa ảnh và văn bản */
+        }
+
+
+        .highlight-content {
+            /* Điều chỉnh kiểu dáng và kiểu căn giữa nội dung bài viết */
+            flex: 1;
+            font-size: 18px;
+        }
+
+        /* CSS cho nội dung bài viết nổi bật */
+        .highlight-content h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .highlight-content p {
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-container">
+            <a href="#"><img class="logo" src="logo.jpg" alt="Logo"></a>
+        </div>
+        <div class="sidebar-item">
+            <a href="#"><i class="fas fa-plus"></i>
+                <h1>Thêm bài đăng</h1>
+            </a>
+        </div>
+        <div class="sidebar-item">
+            <a href="#">
+                <h1>Menu</h1>
+            </a>
+            <ul class="menu">
+                <li><a href="#">Tất cả bài đăng</a></li>
+                <li><a href="#">Bài viết của tôi</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-item">
+            <a href="#">
+                <h1>Nơi bán</h1>
+            </a>
+            <ul class="locations">
+                <li><a href="#">Hà Nội</a></li>
+                <li><a href="#">Hải Phòng</a></li>
+                <li><a class="see-more-button" href="#">Xem thêm <span>+</span></a></li>
+                <li class="hide"><a href="#">Địa điểm A</a></li>
+                <li class="hide"><a href="#">Địa điểm B</a></li>
+                <li class="hide"><a href="#">Địa điểm C</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-content">
+        <!-- Thanh tìm kiếm -->
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm...">
+            <div class="search-icons">
+                <i class="fas fa-sign-in-alt"></i> <!-- Biểu tượng đăng nhập -->
+                <i class="fas fa-shopping-cart"></i> <!-- Biểu tượng mua hàng -->
+            </div>
+        </div>
+        <!-- Nội dung chính của trang web ở đây -->
+
+        <!-- Danh sách 10 bài viết -->
+        <!-- Bài viết 1--------------------------------------------------->
+        <div class="post-container">
+            <div class="post">
+                <div class="post-content">
+                    <div class="user-info">
+                        <img src="avt1.jpg" alt="Ảnh đại diện" class="avatar">
+                        <span class="username">Nguyễn Ngọc Anh</span>
+                    </div>
+                    <p class="activity-time">5 minutes ago</p>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="location">Địa điểm: Hà Nội</span>
+                    </div>
+                    <div class="price">
+                        <i class="fas fa-dollar-sign"></i> <!-- Biểu tượng đô la -->
+                        <span class="price-label">Giá:</span> $100
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:0123456789">0123 456 789</a>
+                    </div>
+                    <p>Nội dung của bài viết...</p>
+                    <img src="image1.jpg" alt="Hình ảnh bài viết 1" class="post-image">
+                    <button class="buy-button">Mua ngay</button>
+                </div>
+            </div>
+            <!-- Bai 2-->
+            <div class="post">
+                <div class="post-content">
+                    <div class="user-info">
+                        <img src="avt2.jpg" alt="Ảnh đại diện" class="avatar">
+                        <span class="username">Bùi Văn Long</span>
+                    </div>
+                    <p class="activity-time">23/09/2023</p>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="location">Địa điểm: Cầu Giấy</span>
+                    </div>
+                    <div class="price">
+                        <i class="fas fa-dollar-sign"></i> <!-- Biểu tượng đô la -->
+                        <span class="price-label">Giá:</span> $100
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:0123456789">0123 454 789</a>
+                    </div>
+                    <p>Nội dung của bài viết...</p>
+                    <img src="image2.jpg" alt="Hình ảnh bài viết 2" class="post-image">
+                    <button class="buy-button">Mua ngay</button>
+                </div>
+            </div>
+            <div class="post">
+                <div class="post-content">
+                    <div class="user-info">
+                        <img src="avt3.jpg" alt="Ảnh đại diện" class="avatar">
+                        <span class="username">Hoàng Linh Chi</span>
+                    </div>
+                    <p class="activity-time">20/09/2023</p>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="location">Địa điểm: Ba Đình</span>
+                    </div>
+                    <div class="price">
+                        <i class="fas fa-dollar-sign"></i> <!-- Biểu tượng đô la -->
+                        <span class="price-label">Giá:</span> $100
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:0123456789">0987 456 789</a>
+                    </div>
+                    <p>Nội dung của bài viết...</p>
+                    <img src="image3.jpg" alt="Hình ảnh bài viết 3" class="post-image">
+                    <button class="buy-button">Mua ngay</button>
+                </div>
+            </div>
+
+
+            <!-- Thêm các bài viết khác tương tự cho đến bài viết 10 -->
+        </div>
+    </div>
+    <script>
+        const seeMoreButton = document.querySelector('.see-more-button');
+        const locations = document.querySelectorAll('.locations li.hide');
+
+        seeMoreButton.addEventListener('click', () => {
+            locations.forEach(location => {
+                location.classList.toggle('hide');
+            });
+            const spanIcon = seeMoreButton.querySelector('span');
+            spanIcon.textContent = spanIcon.textContent === '+' ? '-' : '+';
+            seeMoreButton.classList.toggle('expanded');
+        });
+    </script>
+
+
+    <!-- Nội dung chính của trang web ở đây -->
+    <div class="highlight">
+        <h2>Bài viết nổi bật</h2>
+
+        <!-- Con moe thu 1-->
+        <div class="highlight-post">
+            <div class="highlight-image">
+                <a href="baiViet1.html">
+                    <img src="avtB1.jpg" alt="Ảnh bài viết nổi bật 1">
+                </a>
+            </div>
+            <div class="highlight-content">
+                <h3><a href="baiViet1.html">Con mòe nè</a></h3>
+                <p>01/10/2004</p>
+                <!-- Thêm các thông tin khác như giá tiền, icon, vị trí, số điện thoại, vv. -->
+            </div>
+        </div>
+
+        <!-- Con moe thu 2-->
+        <div class="highlight-post">
+            <div class="highlight-image">
+                <a href="lbaiViet2.html">
+                    <img src="avtB2.jpg" alt="Ảnh bài viết nổi bật 2">
+                </a>
+            </div>
+            <div class="highlight-content">
+                <h3><a href="baiViet2.html">Con mòe nữa nè...</a></h3>
+                <p>01/10/2004</p>
+                <!-- Thêm các thông tin khác như giá tiền, icon, vị trí, số điện thoại, vv. -->
+            </div>
+        </div>
+
+
+        <!-- Con moe thu 3-->
+        <div class="highlight-post">
+            <div class="highlight-image">
+                <a href="lbaiViet3.html">
+                    <img src="avtB3.jpg" alt="Ảnh bài viết nổi bật 3">
+                </a>
+            </div>
+            <div class="highlight-content">
+                <h3><a href="baiViet3.html">Lại mòe nữa á???</a></h3>
+                <p>01/10/2004</p>
+                <!-- Thêm các thông tin khác như giá tiền, icon, vị trí, số điện thoại, vv. -->
+            </div>
+        </div>
+
+        <!-- Con moe thu 4-->
+        <div class="highlight-post">
+            <div class="highlight-image">
+                <a href="lbaiViet4.html">
+                    <img src="avtB4.jpg" alt="Ảnh bài viết nổi bật 4">
+                </a>
+            </div>
+            <div class="highlight-content">
+                <h3><a href="baiViet4.html">Tất nhin là mòe rùi..hehe</a></h3>
+                <p>01/10/2004</p>
+                <!-- Thêm các thông tin khác như giá tiền, icon, vị trí, số điện thoại, vv. -->
+            </div>
+        </div>
+        <!-- Thêm các bài viết nổi bật khác nếu cần -->
+    </div>
+
+
+
+</body>
+
+</html>
